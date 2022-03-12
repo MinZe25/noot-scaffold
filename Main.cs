@@ -19,12 +19,8 @@ public class Main
             Log.WriteLine($"[{index}] {item}", ConsoleColor.Green);
         }
 
-        int ind = Input.ReadInt("Scaffold selected [0]: ", ConsoleColor.Green);
+        int ind = Input.ReadInt("\nScaffold selected [0]: ", ConsoleColor.Green);
         return allScaffolds[ind];
-    }
-
-    public Main() : this(Array.Empty<string>())
-    {
     }
 
     public Main(IReadOnlyCollection<string> args)
@@ -55,6 +51,7 @@ public class Main
         Dictionary<string, string> Allproperties = ScaffoldDirectoryDetector.ReadScaffoldProperties(scaffold);
         if (Allproperties.TryGetValue("description", out var desc))
         {
+            Log.Write("\nDescription: ", ConsoleColor.Green);
             Log.WriteLine(desc, ConsoleColor.Cyan);
         }
 
@@ -68,8 +65,10 @@ public class Main
             {
                 sel = value;
             }
+
             properties[key] = sel;
         }
+
         new Scaffold(properties, scaffold, this._dir, true);
     }
 }

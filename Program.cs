@@ -12,12 +12,14 @@ public class Program
     {
         // var main = new Main(args);
         // Regex _rx = new("__(?<input>.*)__", RegexOptions.Compiled);
-        var str = "__hello.world how_are;format=camel__";
-        new Scaffold(null, null, null).ParseStringWithProperties(str);
-
-        str = "__hello.world how_are with packaged;format=packaged__";
-        new Scaffold(null, null, null).ParseStringWithProperties(str);
-        str = "__hello.world how_are with packaged uppercase;format=packaged,upper__";
-        new Scaffold(null, null, null).ParseStringWithProperties(str);
+        // var str = "{{hello.world how_are;format=camel}}";
+        // new Scaffold(null, null, null).ParseStringWithProperties(str);
+        // str = "{{hello.world how_are with packaged;format=packaged}}";
+        // new Scaffold(null, null, null).ParseStringWithProperties(str);
+        // str = "{{hello.world how_are with packaged uppercase;format=packaged,upper}}";
+        // new Scaffold(null, null, null).ParseStringWithProperties(str);
+        var str = "__{{hello world;format=packaged,upper}}__{{man wow;format=camel}}__";
+        Log.WriteLine(new Scaffold(null, null, null).ParseStringWithProperties(str)
+            , ConsoleColor.Magenta);
     }
 }

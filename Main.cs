@@ -69,9 +69,10 @@ public class Main
                 sel = value;
             }
 
+            properties[key] = sel;
             Log.WriteLine($"{key}={sel}");
         }
 
-        new Scaffold(properties, scaffold, this._dir);
+        new Scaffold(properties, scaffold, this._dir, true);
     }
 }

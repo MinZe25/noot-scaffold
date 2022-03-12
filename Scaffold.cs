@@ -17,13 +17,16 @@ public class Scaffold
     private Dictionary<string, string> _properties;
     private string _currentDir;
     private string _outputDir;
+    private bool skipPropertiesFile;
     private Regex _rx = new("{{(?<input>.*?)}}", RegexOptions.Compiled);
 
-    public Scaffold(Dictionary<string, string> properties, string currentDir, string outputDir)
+    public Scaffold(Dictionary<string, string> properties, string currentDir, string outputDir,
+        bool skipPropertiesFile = false)
     {
         this._properties = properties;
         this._currentDir = currentDir;
         this._outputDir = outputDir;
+        this.skipPropertiesFile = skipPropertiesFile;
         Run();
     }
 
@@ -104,7 +107,7 @@ public class Scaffold
      */
     public void TreatFile(string fileName)
     {
-        if (fileName.Equals("scaffold.properties")) return;
+        if (this.skipPropertiesFile && fileName.Equals("scaffold.properties")) return;
         //Reads the file
         //Parse the file if necessary, on a buffer
         //Write the buffer on the outputDir

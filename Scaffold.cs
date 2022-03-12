@@ -28,24 +28,27 @@ public class Scaffold
 
     public string ParseStringWithProperties(string str)
     {
-        Match match = this._rx.Match(str);
-        if (!match.Success) return str;
-        string[] inputs = match.Groups["input"].Value.Split(";");
-        string formats = string.Empty;
-        string value = inputs[0];
-        if (inputs.Length >= 2)
+        while (true)
         {
-            formats = inputs[1];
-            string[] f = formats.Split("=");
-            if (f.Length <= 1) throw new ArgumentException("format defined and not specified");
-            formats = f[1];
-        }
+            Match match = this._rx.Match(str);
+            if (!match.Success) return str;
+            string[] inputs = match.Groups["input"].Value.Split(";");
+            string formats = string.Empty;
+            string value = inputs[0];
+            if (inputs.Length >= 2)
+            {
+                formats = inputs[1];
+                string[] f = formats.Split("=");
+                if (f.Length <= 1) throw new ArgumentException("format defined and not specified");
+                formats = f[1];
+            }
 
-        var sb = new StringBuilder();
-        sb.Append(str.Substring(0, match.Index));
-        sb.Append(ScaffoldFormatter.MultipleFormat(value, formats));
-        sb.Append(str.Substring(match.Index + match.Length));
-        return ParseStringWithProperties(sb.ToString());
+            var sb = new StringBuilder();
+            sb.Append(str[..match.Index]);
+            sb.Append(ScaffoldFormatter.MultipleFormat(value, formats));
+            sb.Append(str[(match.Index + match.Length)..]);
+            str = sb.ToString();
+        }
     }
 
     public void TreatFolder(string folderName)

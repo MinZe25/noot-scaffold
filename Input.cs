@@ -27,4 +27,5 @@ public static class Input
     {
         return Read(message, color);
     }
+    
 }

@@ -78,18 +78,14 @@ public class Scaffold
         }
     }
 
-    public void TreatFolder(string folderName)
+    private void TreatFolder(string folderName)
     {
-        //Detects a folder
-        //Reads it's name
-        //Parse the name if necessary
-        //Create the new folder on the ouputDir
-        //Create a new Scaffold inside the folder
         string newName = ParseStringWithProperties(folderName);
         string oldFolderPath = Path.Combine(this._currentDir, folderName);
         string newFolder = Path.Combine(this._outputDir, newName);
         Directory.CreateDirectory(newFolder);
-        var newScaffold = new Scaffold(this._properties, oldFolderPath, newFolder);
+        Log.WriteLine($"created folder {newFolder}", ConsoleColor.Cyan);
+        new Scaffold(this._properties, oldFolderPath, newFolder);
     }
 
     private DuplicateResult DuplicatedFile(string fileName)
@@ -108,10 +104,6 @@ public class Scaffold
     public void TreatFile(string fileName)
     {
         if (this.skipPropertiesFile && fileName.Equals("scaffold.properties")) return;
-        //Reads the file
-        //Parse the file if necessary, on a buffer
-        //Write the buffer on the outputDir
-        //Go to the next file
         string outFile = Path.Combine(this._outputDir, ParseStringWithProperties(fileName));
         string inFile = Path.Combine(this._currentDir, fileName);
         if (File.Exists(outFile))
@@ -137,5 +129,8 @@ public class Scaffold
         {
             writer.WriteLine(ParseStringWithProperties(line));
         }
+        writer.Close();
+        fs.Close();
+        Log.WriteLine($"created file {outFile}", ConsoleColor.Cyan);
     }
 }

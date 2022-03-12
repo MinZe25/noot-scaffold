@@ -16,10 +16,10 @@ public class Main
             allScaffolds.Select(s => Path.GetRelativePath(scaffoldDir, s));
         foreach ((string item, int index) in relativeScaffolds.WithIndex())
         {
-            Log.WriteLine($"[{index}]{item}", ConsoleColor.Green);
+            Log.WriteLine($"[{index}] {item}", ConsoleColor.Green);
         }
 
-        int ind = Input.ReadInt("Selection[0]: ", ConsoleColor.Green);
+        int ind = Input.ReadInt("Scaffold selected [0]: ", ConsoleColor.Green);
         return allScaffolds[ind];
     }
 
@@ -63,16 +63,13 @@ public class Main
             .ToDictionary(s => s.Key, s => s.Value);
         foreach ((string? key, string? value) in properties)
         {
-            string? sel = Input.ReadString($"{key}[{value}]=", ConsoleColor.Green);
+            string? sel = Input.ReadString($"{key} [{value}]:", ConsoleColor.Green);
             if (string.IsNullOrEmpty(sel))
             {
                 sel = value;
             }
-
             properties[key] = sel;
-            Log.WriteLine($"{key}={sel}");
         }
-
         new Scaffold(properties, scaffold, this._dir, true);
     }
 }

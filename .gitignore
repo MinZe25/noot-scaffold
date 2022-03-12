@@ -166,7 +166,7 @@ fabric.properties
 # Ignore all local history of files
 .history
 .ionide
-
+/nupkg
 # Support for Project snippet scope
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,rider,intellij+all,dotnetcore

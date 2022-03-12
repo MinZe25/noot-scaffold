@@ -24,6 +24,22 @@ public class Scaffold
         this._properties = properties;
         this._currentDir = currentDir;
         this._outputDir = outputDir;
+        Run();
+    }
+
+    public void Run()
+    {
+        var files = Directory.GetFiles(this._currentDir);
+        foreach (string file in files)
+        {
+            TreatFile(Path.GetFileName(file));
+        }
+
+        var folders = Directory.GetDirectories(this._currentDir);
+        foreach (string folder in folders)
+        {
+            TreatFolder(Path.GetFileName(folder));
+        }
     }
 
     public string ParseStringWithProperties(string str)
@@ -35,6 +51,14 @@ public class Scaffold
             string[] inputs = match.Groups["input"].Value.Split(";");
             string formats = string.Empty;
             string value = inputs[0];
+            //Find in dictionary
+            if (this._properties.ContainsKey(value))
+            {
+                value = this._properties[value];
+            }
+            else
+                Log.WriteLine($"Property {value} not found in dictionary", ConsoleColor.Red);
+
             if (inputs.Length >= 2)
             {
                 formats = inputs[1];
@@ -80,15 +104,16 @@ public class Scaffold
      */
     public void TreatFile(string fileName)
     {
+        if (fileName.Equals("scaffold.properties")) return;
         //Reads the file
         //Parse the file if necessary, on a buffer
         //Write the buffer on the outputDir
         //Go to the next file
-        var outFile = ParseStringWithProperties(Path.Combine(this._outputDir, fileName));
-        var inFile = Path.Combine(this._currentDir, fileName);
+        string outFile = Path.Combine(this._outputDir, ParseStringWithProperties(fileName));
+        string inFile = Path.Combine(this._currentDir, fileName);
         if (File.Exists(outFile))
         {
-            switch (DuplicatedFile(fileName))
+            switch (DuplicatedFile(outFile))
             {
                 case DuplicateResult.Overwrite:
                     File.Delete(fileName);
@@ -97,20 +122,17 @@ public class Scaffold
                     return;
                 case DuplicateResult.Cancel:
                     throw new CancelledScaffoldException(fileName);
-                    return;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
         string[] lines = File.ReadAllLines(inFile);
-        using (var fs = new FileStream(outFile, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite))
+        using var fs = new FileStream(outFile, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+        using var writer = new StreamWriter(fs);
+        foreach (string line in lines)
         {
-            using (var writer = new StreamWriter(fs))
-            {
-                foreach (string line in lines)
-                {
-                    writer.WriteLine(ParseStringWithProperties(line));
-                }
-            }
+            writer.WriteLine(ParseStringWithProperties(line));
         }
     }
 }

@@ -45,7 +45,7 @@ public static class ScaffoldDirectoryDetector
         {
             string[] split = line.Split('=');
             if (split.Length != 2) continue;
-            properties.Add(split[0], split[1]);
+            properties.Add(split[0].Trim(), split[1].Trim());
         }
 
         return properties;

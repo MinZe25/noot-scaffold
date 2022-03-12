@@ -40,13 +40,11 @@ public class Main
         if (string.IsNullOrEmpty(scaffoldName))
         {
             scaffold = SelectScaffold();
-            Log.WriteLine($"Selected scaffold: {scaffold}");
         }
         else if (ScaffoldDirectoryDetector.TryGetScaffoldPath(
                      this._dir, scaffoldName, out string scaffoldPath))
         {
             scaffold = scaffoldPath;
-            Log.WriteLine($"Selected scaffold: {scaffold}");
         }
         else
         {
@@ -54,10 +52,18 @@ public class Main
             return;
         }
 
-        Dictionary<string, string> properties = ScaffoldDirectoryDetector.ReadScaffoldProperties(scaffold);
+        Dictionary<string, string> Allproperties = ScaffoldDirectoryDetector.ReadScaffoldProperties(scaffold);
+        if (Allproperties.TryGetValue("description", out var desc))
+        {
+            Log.WriteLine(desc, ConsoleColor.Cyan);
+        }
+
+        var properties = Allproperties
+            .Where(s => s.Key != "description")
+            .ToDictionary(s => s.Key, s => s.Value);
         foreach ((string? key, string? value) in properties)
         {
-            var sel = Input.ReadString($"{key}[{value}]=", ConsoleColor.Green);
+            string? sel = Input.ReadString($"{key}[{value}]=", ConsoleColor.Green);
             if (string.IsNullOrEmpty(sel))
             {
                 sel = value;
@@ -65,5 +71,7 @@ public class Main
 
             Log.WriteLine($"{key}={sel}");
         }
+
+        new Scaffold(properties, scaffold, this._dir);
     }
 }

@@ -11,12 +11,13 @@
         <PackageOutputPath>./nupkg</PackageOutputPath>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Title>Noot Scaffold</Title>
-        <Authors>MinZe25`</Authors>
+        <Authors>MinZe25</Authors>
         <Description>An scaffold library for folders and files.</Description>
         <PackageProjectUrl>https://github.com/MinZe25/noot-scaffold</PackageProjectUrl>
         <PackageLicenseUrl>https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode</PackageLicenseUrl>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
         <PackageVersion>1.1.0</PackageVersion>
+        <Company>MinZe25</Company>
 
     </PropertyGroup>
 

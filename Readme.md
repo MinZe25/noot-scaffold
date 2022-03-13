@@ -3,7 +3,10 @@
 an scaffold-cli library written in .net6.
 It will replace everything files and folders names and it's content following a pattern.
 It mimics the usage of g8/scaffold.
+## Installation
+https://www.nuget.org/packages/noot-scaffold/
 
+`dotnet tool install --global noot-scaffold`
 ## Usage
 
 Given this structure:

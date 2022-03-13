@@ -72,7 +72,7 @@ public class Scaffold
 
             var sb = new StringBuilder();
             sb.Append(str[..match.Index]);
-            sb.Append(ScaffoldFormatter.MultipleFormat(value, formats));
+            sb.Append(Formatter.MultipleFormat(value, formats));
             sb.Append(str[(match.Index + match.Length)..]);
             str = sb.ToString();
         }

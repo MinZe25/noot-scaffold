@@ -2,18 +2,18 @@
 
 namespace noot_scaffold.Formats;
 
-public static partial class ScaffoldFormatter
+public static partial class Formatter
 {
-    private class PackagedFormatter : IFormatter
+    private static class PackagedFormatter
     {
-        private string CharacterToLower(char c)
+        private static string CharacterToLower(char c)
         {
             return c.ToString().ToLower();
         }
 
-        public StringBuilder Format(string input)
+        public static StringBuilder Format(string input)
         {
-            string[] values = input.Split(IFormatter.delimiters);
+            string[] values = input.Split(delimiters);
             var sb = new StringBuilder();
             for (var i = 0; i < values.Length; i++)
             {

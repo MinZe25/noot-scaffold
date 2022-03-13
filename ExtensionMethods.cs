@@ -1,4 +1,6 @@
-﻿namespace noot_scaffold;
+﻿using noot_scaffold.Formats;
+
+namespace noot_scaffold;
 
 public static class ExtensionMethods
 {

@@ -2,10 +2,10 @@
 
 namespace noot_scaffold.Formats;
 
-public static partial class ScaffoldFormatter
+public static partial class Formatter
 {
-    private class UpperCaseFormatter : IFormatter
+    private static class UpperCaseFormatter
     {
-        public StringBuilder Format(string input) => new(input.ToUpper());
+        public static StringBuilder Format(string input) => new(input.ToUpper());
     }
 }

@@ -30,22 +30,22 @@ public class Scaffold
         Run();
     }
 
-    public void Run()
+    private void Run()
     {
-        var files = Directory.GetFiles(this._currentDir);
+        string[] files = Directory.GetFiles(this._currentDir);
         foreach (string file in files)
         {
             TreatFile(Path.GetFileName(file));
         }
 
-        var folders = Directory.GetDirectories(this._currentDir);
+        string[] folders = Directory.GetDirectories(this._currentDir);
         foreach (string folder in folders)
         {
             TreatFolder(Path.GetFileName(folder));
         }
     }
 
-    public string ParseStringWithProperties(string str)
+    private string ParseStringWithProperties(string str)
     {
         while (true)
         {
@@ -101,7 +101,7 @@ public class Scaffold
     /**
      * @param fileName the name of the file to be copied
      */
-    public void TreatFile(string fileName)
+    private void TreatFile(string fileName)
     {
         if (this.skipPropertiesFile && fileName.Equals("scaffold.properties")) return;
         string outFile = Path.Combine(this._outputDir, ParseStringWithProperties(fileName));

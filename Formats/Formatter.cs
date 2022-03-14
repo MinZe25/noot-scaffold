@@ -17,6 +17,7 @@ public static partial class Formatter
         {
             "camel" => CamelCaseFormatter.Format(input.ToString()),
             "package" => PackagedFormatter.Format(input.ToString()),
+            "directory" => DirectoryFormatter.Format(input.ToString()),
             "upper" => UpperCaseFormatter.Format(input.ToString()),
             "lower" => LowerCaseFormatter.Format(input.ToString()),
             "snake" => SnakeCaseFormatter.Format(input.ToString()),

@@ -55,7 +55,7 @@ whitout modifying anything this would create the file `book.scala`
 Examples with input`hello world.test`
 
 | name    | description          | example result   |
-| ------- | -------------------- | ---------------- |
+| ------- |----------------------|------------------|
 | camel   | Camel Case           | helloWorldTest   |
 | package | Replaces with dots   | hello.world.test |
 | upper   | Uppercase everything | HELLO WORLD.TEST |
@@ -63,6 +63,7 @@ Examples with input`hello world.test`
 | snake   | Snake case           | hello_world_test |
 | kebab   | Kebab case           | hello-world-test |
 | pascal  | Pascal case          | HelloWorldTest   |
+|directory| Replaces with /      | hello/world/test |
 
 ### Composing formatters
 

@@ -13,7 +13,7 @@ public static partial class Formatter
 
     private static StringBuilder Format(StringBuilder input, string format)
     {
-        return format switch
+        return format.ToLower() switch
         {
             "camel" => CamelCaseFormatter.Format(input.ToString()),
             "package" => PackagedFormatter.Format(input.ToString()),

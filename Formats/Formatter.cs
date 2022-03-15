@@ -15,6 +15,7 @@ public static partial class Formatter
     {
         return format.ToLower() switch
         {
+            { } s when s.StartsWith("pickat(") => PickAt.Format(input.ToString(),s),
             "camel" => CamelCaseFormatter.Format(input.ToString()),
             "package" => PackagedFormatter.Format(input.ToString()),
             "directory" => DirectoryFormatter.Format(input.ToString()),

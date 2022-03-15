@@ -54,16 +54,17 @@ whitout modifying anything this would create the file `book.scala`
 
 Examples with input`hello world.test`
 
-| name    | description          | example result   |
-| ------- |----------------------|------------------|
-| camel   | Camel Case           | helloWorldTest   |
-| package | Replaces with dots   | hello.world.test |
-| upper   | Uppercase everything | HELLO WORLD.TEST |
-| lower   | Lowercase evertyhing | hello world.test |
-| snake   | Snake case           | hello_world_test |
-| kebab   | Kebab case           | hello-world-test |
-| pascal  | Pascal case          | HelloWorldTest   |
-|directory| Replaces with /      | hello/world/test |
+| name      | description                                                                     | example result     |
+|-----------|---------------------------------------------------------------------------------|--------------------|
+| camel     | Camel Case                                                                      | helloWorldTest     |
+| package   | Replaces with dots                                                              | hello.world.test   |
+| upper     | Uppercase everything                                                            | HELLO WORLD.TEST   |
+| lower     | Lowercase evertyhing                                                            | hello world.test   |
+| snake     | Snake case                                                                      | hello_world_test   |
+| kebab     | Kebab case                                                                      | hello-world-test   |
+| pascal    | Pascal case                                                                     | HelloWorldTest     |
+| directory | Replaces with /                                                                 | hello/world/test   |
+| pickat(n) | picks the delimited N word. if N > words => N = 0, if N < 0 returns everything. | pickat(1) => world |
 
 ### Composing formatters
 

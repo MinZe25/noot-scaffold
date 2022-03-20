@@ -16,7 +16,7 @@
         <PackageProjectUrl>https://github.com/MinZe25/noot-scaffold</PackageProjectUrl>
         <PackageLicenseUrl>https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode</PackageLicenseUrl>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-        <PackageVersion>1.4.0</PackageVersion>
+        <PackageVersion>1.6.0</PackageVersion>
         <Company>MinZe25</Company>
 
     </PropertyGroup>

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using System.Text.RegularExpressions;
 using noot_scaffold.Exceptions;
 using noot_scaffold.Formats;
@@ -11,14 +12,16 @@ public class Scaffold
     {
         Overwrite,
         Skip,
-        Cancel
+        Cancel,
+        Nothing
     }
 
-    private Dictionary<string, string> _properties;
-    private string _currentDir;
-    private string _outputDir;
-    private bool skipPropertiesFile;
-    private Regex _rx = new("{{(?<input>.*?)}}", RegexOptions.Compiled);
+    public static DuplicateResult defaultDuplicateResult = DuplicateResult.Nothing;
+    private readonly Dictionary<string, string> _properties;
+    private readonly string _currentDir;
+    private readonly string _outputDir;
+    private readonly bool _skipPropertiesFile;
+    private readonly Regex _rx = new("{{(?<input>.*?)}}", RegexOptions.Compiled);
 
     public Scaffold(Dictionary<string, string> properties, string currentDir, string outputDir,
         bool skipPropertiesFile = false)
@@ -26,7 +29,7 @@ public class Scaffold
         this._properties = properties;
         this._currentDir = currentDir;
         this._outputDir = outputDir;
-        this.skipPropertiesFile = skipPropertiesFile;
+        this._skipPropertiesFile = skipPropertiesFile;
         Run();
     }
 
@@ -85,11 +88,12 @@ public class Scaffold
         string newFolder = Path.Combine(this._outputDir, newName);
         Directory.CreateDirectory(newFolder);
         Log.WriteLine($"created folder {newFolder}", ConsoleColor.Cyan);
-        new Scaffold(this._properties, oldFolderPath, newFolder);
+        var scaffold = new Scaffold(this._properties, oldFolderPath, newFolder);
     }
 
     private DuplicateResult DuplicatedFile(string fileName)
     {
+        if (defaultDuplicateResult != DuplicateResult.Nothing) return defaultDuplicateResult;
         string? inp = Input.ReadString($"{fileName} exists, do you want to overwrite it? (Y/n)");
         if (inp?.ToLower() != "n") return DuplicateResult.Overwrite;
         inp = Input.ReadString("do you want to skip this file? saying no will cancel the scaffold (Y/n)");
@@ -100,10 +104,11 @@ public class Scaffold
 
     /**
      * @param fileName the name of the file to be copied
+     * <exception cref="ArgumentOutOfRangeException"></exception>
      */
     private void TreatFile(string fileName)
     {
-        if (this.skipPropertiesFile && fileName.Equals("scaffold.properties")) return;
+        if (this._skipPropertiesFile && fileName.Equals("scaffold.properties")) return;
         string outFile = Path.Combine(this._outputDir, ParseStringWithProperties(fileName));
         string inFile = Path.Combine(this._currentDir, fileName);
         if (File.Exists(outFile))
@@ -112,11 +117,14 @@ public class Scaffold
             {
                 case DuplicateResult.Overwrite:
                     File.Delete(fileName);
+                    Log.WriteLine($"Deleted file {outFile}", ConsoleColor.DarkRed);
                     break;
                 case DuplicateResult.Skip:
+                    Log.WriteLine($"Skipping file {outFile}", ConsoleColor.Yellow);
                     return;
                 case DuplicateResult.Cancel:
                     throw new CancelledScaffoldException(fileName);
+                case DuplicateResult.Nothing:
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -129,8 +137,9 @@ public class Scaffold
         {
             writer.WriteLine(ParseStringWithProperties(line));
         }
+
         writer.Close();
         fs.Close();
-        Log.WriteLine($"created file {outFile}", ConsoleColor.Cyan);
+        Log.WriteLine($"Created file {outFile}", ConsoleColor.Cyan);
     }
 }

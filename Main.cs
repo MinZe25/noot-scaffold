@@ -29,11 +29,53 @@ public class Main
         Start(args);
     }
 
+    private void ParseDefaultDuplicate(IReadOnlyCollection<string> args)
+    {
+        if (args.Any(a => a.StartsWith("--skip")))
+            Scaffold.defaultDuplicateResult = Scaffold.DuplicateResult.Skip;
+        else if (args.Any(a => a.StartsWith("--overwrite")))
+            Scaffold.defaultDuplicateResult = Scaffold.DuplicateResult.Overwrite;
+        else if (args.Any(a => a.StartsWith("--cancel")))
+            Scaffold.defaultDuplicateResult = Scaffold.DuplicateResult.Cancel;
+    }
+
+    private Dictionary<string, string> ParseDefaultProperties(IReadOnlyCollection<string> args)
+    {
+        var dict = new Dictionary<string, string>();
+        string[] a = { "--skip", "--overwrite", "--cancel" };
+        for (var i = 0; i < args.Count; i++)
+        {
+            string arg = args.ElementAt(i);
+            if (!arg.StartsWith("--")) continue;
+            if (a.Contains(arg)) continue;
+            if (!arg.Contains("="))
+            {
+                dict.Add(arg[2..], args.ElementAt(i + 1));
+                i++;
+            }
+            else
+            {
+                string[] split = arg.Split('=');
+                dict.Add(split[0][2..], split[1]);
+            }
+        }
+
+        return dict;
+    }
+
     private void Start(IReadOnlyCollection<string> args)
     {
         string scaffold;
         string scaffoldName = args.FirstOrDefault(string.Empty);
-        if (string.IsNullOrEmpty(scaffoldName))
+
+        ParseDefaultDuplicate(args);
+        if (Scaffold.defaultDuplicateResult != Scaffold.DuplicateResult.Nothing)
+        {
+            Log.Write("Default duplicate behaviour set to: ", ConsoleColor.Green);
+            Log.WriteLine(Scaffold.defaultDuplicateResult.ToString(), ConsoleColor.Cyan);
+        }
+
+        if (string.IsNullOrEmpty(scaffoldName) || scaffoldName.StartsWith("--"))
         {
             scaffold = SelectScaffold();
         }
@@ -55,8 +97,9 @@ public class Main
             Log.WriteLine(desc, ConsoleColor.Cyan);
         }
 
+        var forcedProperties = ParseDefaultProperties(args);
         var properties = Allproperties
-            .Where(s => s.Key != "description")
+            .Where(s => s.Key != "description" && !forcedProperties.ContainsKey(s.Key))
             .ToDictionary(s => s.Key, s => s.Value);
         foreach ((string? key, string? value) in properties)
         {
@@ -67,6 +110,11 @@ public class Main
             }
 
             properties[key] = sel;
+        }
+
+        foreach ((string? key, string? value) in forcedProperties)
+        {
+            properties[key] = value;
         }
 
         new Scaffold(properties, scaffold, this._dir, true);

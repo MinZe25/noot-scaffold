@@ -21,7 +21,7 @@ public static partial class Formatter
                 var str = new StringBuilder();
                 if (i != 0)
                     str.Append('.');
-                str.Append($"{CharacterToLower(s[0])}{s[1..]}");
+                str.Append(s);
                 sb.Append(str);
             }
 

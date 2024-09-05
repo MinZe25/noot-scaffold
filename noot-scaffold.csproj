@@ -2,7 +2,6 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net6.0</TargetFramework>
         <RootNamespace>noot_scaffold</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
@@ -16,8 +15,9 @@
         <PackageProjectUrl>https://github.com/MinZe25/noot-scaffold</PackageProjectUrl>
         <PackageLicenseUrl>https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode</PackageLicenseUrl>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-        <PackageVersion>1.6.0</PackageVersion>
+        <PackageVersion>1.7.0</PackageVersion>
         <Company>MinZe25</Company>
+        <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
 
     </PropertyGroup>
 
